@@ -1,3 +1,9 @@
+"""
+참고사항: 받은 dictionary데이터는
+{<다음동작까지 걸리는 시간>:<다음 동작>}
+형태로 이루어져 있음
+"""
+
 isStop = False;
 
 def start(dictionary):
