@@ -4,7 +4,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2a7859a9-a27e-4b1e-ba48-bff5eac37c80</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>teamproject_py_0.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -21,7 +22,12 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="teamproject_py_0.py" />
+    <Compile Include="api\FileSaver.py" />
+    <Compile Include="api\Record.py" />
+    <Compile Include="Main.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="api\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
