@@ -4,14 +4,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>2a7859a9-a27e-4b1e-ba48-bff5eac37c80</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
+    <StartupFile>Main.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>teamproject-py-0</Name>
     <RootNamespace>teamproject-py-0</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +24,7 @@
   <ItemGroup>
     <Compile Include="api\FileSaver.py" />
     <Compile Include="api\Record.py" />
+    <Compile Include="api\Runner.py" />
     <Compile Include="Main.py" />
   </ItemGroup>
   <ItemGroup>
