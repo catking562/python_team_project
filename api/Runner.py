@@ -7,13 +7,15 @@ import keyboard
 형태로 이루어져 있음
 """
 # 직접 생성
-my_dict = {3: 'Alice', 2: "yes" , 5 : 'female'}
+
+#my_dict = {3: 'Alice', 2: "yes" , 5 : 'female'}
 
 
 
 isStop = False
 
 def start(dictionary):
+    global isStop
     isStop = False
     #dictionary에 들어있는 행동들을 반복
     for i in dictionary.keys():
@@ -39,4 +41,4 @@ def repeatStart(dictionary):
             print(dictionary.get(i))
     return True
 
-repeatStart(my_dict)
+#repeatStart(my_dict)
