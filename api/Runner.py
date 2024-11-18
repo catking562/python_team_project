@@ -1,5 +1,5 @@
 import pyautogui as pg
-
+import keyboard
 
 """
 참고사항: 받은 dictionary데이터는
@@ -16,26 +16,27 @@ isStop = False
 def start(dictionary):
     isStop = False
     #dictionary에 들어있는 행동들을 반복
-    while not isStop:
-        for i in dictionary.keys():
+    for i in dictionary.keys():
             pg.sleep(i)
+            if isStop:
+                break
             print(dictionary.get(i))
-           
-        return True
-
-
-def repeatStart(dictionary):
-    isStop = False;
-    #dictionary에 들어있는 행동들을 무한반복
-    while not isStop:
-        for i in dictionary.keys():
-            pg.sleep(i)
-            print(dictionary.get(i))
-           
-            pg.sleep(1)
-    return True
 
 
 def stop():
     isStop = True
+    return isStop
+
+
+def repeatStart(dictionary):
+    isStop = False
+    #dictionary에 들어있는 행동들을 무한반복
+    while not isStop: #isstop이 참일 경우 while 루프를 벗어나도록 함
+        for i in dictionary.keys():
+            pg.sleep(i)
+            if isStop:
+                return True
+            print(dictionary.get(i))
     return True
+
+repeatStart(my_dict)
