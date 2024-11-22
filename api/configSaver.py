@@ -6,6 +6,9 @@ def get(key):
 def put(key, value):
     print("{key}값에 해당하는 데이터를 {value}로 설정함");
 
+def isKey(key):
+    print("{key}값에 데이터가 있는지 확인");
+
 def save():
     print("저장된 모든 {key:value} 데이터를 저장함");
 
