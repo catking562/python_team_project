@@ -7,15 +7,12 @@ startTime = 0
 
 lock = threading.lock();
 
-#프로그램 시작 시간 저장
 def getStartTime():
-    StartTime = time.perf_counter  #시간 단위:s
+    StartTime = time.perf_counter
     return startTime;
 
-#입력 저장
 def add_input(value):
     global isStop;
-    global starttime
     global control;
     
     lock.acquire();
@@ -28,7 +25,7 @@ def add_input(value):
 
 def start():
     global isStop;
-    global starttime;
+    global startTime;
     isStop = False;
     startTime = time.perf_counter;
     return True;
