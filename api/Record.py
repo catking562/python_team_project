@@ -5,11 +5,7 @@ control = ()
 isStop = False
 startTime = 0
 
-lock = threading.lock();
-
-def getStartTime():
-    StartTime = time.perf_counter
-    return startTime;
+lock = threading.Lock();
 
 def add_input(value):
     global isStop;
@@ -26,8 +22,11 @@ def add_input(value):
 def start():
     global isStop;
     global startTime;
+    global control
+    
     isStop = False;
     startTime = time.perf_counter;
+    control += (startTime, )
     return True;
 
 def stop():
