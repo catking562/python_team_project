@@ -1,28 +1,37 @@
 import time;
+import threading
 
-dictionary = {}
-isStop = False;
-startTime = 0;
+control = ()
+isStop = False
+startTime = 0
 
-def getNow():
-    return round(time.time() * 1000);
+lock = threading.lock();
 
 def getStartTime():
+    StartTime = time.perf_counter
     return startTime;
 
-def getSaves():
-    return dictionary;
-
 def add_input(value):
+    global isStop;
+    global starttime
+    global control;
+    
+    lock.acquire();
     if isStop:
         return False;
-    #dictionary에 입력 저장
+    
+    control += (value,)
+    lock.release()
     return True
 
 def start():
+    global isStop;
+    global starttime;
     isStop = False;
+    startTime = time.perf_counter;
     return True;
 
 def stop():
+    global isStop;
     isStop = True;
     return True;
