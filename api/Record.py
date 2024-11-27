@@ -3,7 +3,6 @@ import threading
 
 control = ()
 isStop = False
-startTime = 0
 
 lock = threading.Lock();
 
@@ -21,7 +20,6 @@ def add_input(value):
 
 def start():
     global isStop;
-    global startTime;
     global control
     
     isStop = False;
