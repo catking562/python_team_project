@@ -4,6 +4,7 @@ from pynput.mouse import Listener as ml;
 from api import Record, Runner, configSaver;
 import threading;
 import pynput;
+import time;
 
 """PROGRAM이벤트들"""
 programmode = 0 #[정지, 녹화, 시작, 반복시작, 저장, 불러오기, 인코딩, 옵션]
@@ -103,13 +104,13 @@ def repeatRun(dic):
 def on_click(x, y, button, pressed):
     print(x, y, button, pressed);
     if(programmode==1):
-        Record.add_input(("click", x, y, button, pressed));
+        Record.add_input((time.perf_counter, "click", x, y, button, pressed));
 
 #마우스 스크롤 이벤트
 def on_scroll(x, y, dx, dy):
     print(x, y, dx, dy);
     if(programmode==1):
-        Record.add_input(("scroll", x, y, dx, dy));
+        Record.add_input((time.perf_counter, "scroll", x, y, dx, dy));
 
 #키보드 다운 이벤트
 def on_press(key):
@@ -117,14 +118,14 @@ def on_press(key):
     if(runHotKey(key)):
         return;
     if(programmode==1):
-        Record.add_input(("press", key));
+        Record.add_input((time.perf_counter, "press", key));
 
 
 #키보드 업 이벤트
 def on_release(key):
     print(key, "release");
     if(programmode==1):
-        Record.add_input(("release", key));
+        Record.add_input((time.perf_counter, "release", key));
 
 """GUI이벤트들"""
 win = tkinter.Tk();
