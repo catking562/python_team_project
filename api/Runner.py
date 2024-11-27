@@ -1,15 +1,15 @@
-import pyautogui as pg
-import keyboard
-
 """
 참고사항: 받은 dictionary데이터는
 {<다음동작까지 걸리는 시간>:<다음 동작>}
 형태로 이루어져 있음
 """
 # 직접 생성
+from pynput.keyboard import Button, Controller
+#pynput의 keyboard모듈에 Controller 라는 클래스를 불러옴
 
-
-my_tuple = ((3,"yes"),(2,"love"),(2,"정우"))
+mouse=Controller()
+#control.type("hello World")
+#my_tuple = ((3,mouse.position=500,500),(2,"love"),(2,"정우"))
 
 
 isStop = False
@@ -17,12 +17,12 @@ isStop = False
 def start(tup):
     global isStop
     isStop = False
-    #dictionary에 들어있는 행동들을 반복
+    #tuple에 들어있는 행동들을 반복
     for i in range(0,len(tup)):
             pg.sleep(tup[i][0])
             if isStop:
                 return True
-            print(tup[i][1])
+            #print(tup[i][1])
 
 
 def stop():
