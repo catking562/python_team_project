@@ -8,37 +8,38 @@ import keyboard
 """
 # 직접 생성
 
-#my_dict = {3: 'Alice', 2: "yes" , 5 : 'female'}
 
+my_tuple = ((3,"yes"),(2,"love"),(2,"정우"))
 
 
 isStop = False
 
-def start(dictionary):
+def start(tup):
     global isStop
     isStop = False
     #dictionary에 들어있는 행동들을 반복
-    for i in dictionary.keys():
-            pg.sleep(i)
+    for i in range(0,len(tup)):
+            pg.sleep(tup[i][0])
             if isStop:
-                break
-            print(dictionary.get(i))
+                return True
+            print(tup[i][1])
 
 
 def stop():
     isStop = True
     return isStop
 
+#start(my_tuple)
 
-def repeatStart(dictionary):
+
+def repeatStart(tup):
     isStop = False
-    #dictionary에 들어있는 행동들을 무한반복
     while not isStop: #isstop이 참일 경우 while 루프를 벗어나도록 함
-        for i in dictionary.keys():
-            pg.sleep(i)
-            if isStop:
+      for i in range(0,len(tup)):
+            pg.sleep(tup[i][0])
+            if isStop: #도중에 정지버튼을 누르면 정지하도록 함
                 return True
-            print(dictionary.get(i))
+            #print(tup[i][1])
     return True
 
-#repeatStart(my_dict)
+#repeatStart(my_tuple)
