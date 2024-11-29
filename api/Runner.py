@@ -4,7 +4,7 @@
 형태로 이루어져 있음
 """
 # 직접 생성
-from pynput.keyboard import Button, Controller
+from pynput.keyboard import Controller
 #pynput의 keyboard모듈에 Controller 라는 클래스를 불러옴
 
 mouse=Controller()

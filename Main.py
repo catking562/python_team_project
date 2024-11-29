@@ -3,7 +3,7 @@ import tkinter
 import tkinter.messagebox;
 from pynput.keyboard import Listener as kl;
 from pynput.mouse import Listener as ml;
-from api import Record, Runner, configSaver, DataEncoder;
+from api import Record, Runner, configSaver, DataEncoder, FileSaver;
 import threading;
 import pynput;
 
@@ -140,6 +140,7 @@ runStart = None;
 reapeatStart = None;
 
 isData = False;
+recordData = None;
 
 def updateWindow():
     global fileSave;
@@ -237,8 +238,37 @@ def updateWindow():
             replaceRunStart(1);
             replaceReapeatStart(1);
 
+def filename_pop_accept():
+    global filename_pop;
+    global input_field
+    global input_value;
+    input_value = input_field.get();
+    filename_pop.destroy();
+
 def clickFileSave():
+    global win;
     global programmode;
+    global filename_pop;
+    global input_value;
+    global input_field;
+    programmode = 4;
+    updateWindow();
+    #파일이름 물어보는 팝업
+    filename_pop = tkinter.Toplevel();
+    filename_pop.title("파일 이름 입력");
+    filename_pop.geometry("400x200");
+    input_field = tkinter.Entry(filename_pop, width=30);
+    input_field.pack(pady=10);
+    tkinter.Button(filename_pop, text="확인", command=filename_pop_accept).pack(pady=10);
+    filename_pop.grab_set();
+    win.wait_window(filename_pop);
+    #저장 중 팝업
+    encording_pop = tkinter.Toplevel();
+    encording_pop.title("저장 중...");
+    encording_pop.geometry("200x100");
+    tkinter.Label(encording_pop, text = "저장 중...").pack(pady=20);
+    #저장 시작
+    FileSaver.saveFile(recordData, input_value);
     print("clickFileSave");
 
 def clickFileLoad():
@@ -262,6 +292,7 @@ def clickRecordStart():
 def clickStopRecord():
     global programmode;
     global isData;
+    global recordData;
     #녹화종료
     isData = True;
     programmode = 6;
@@ -271,8 +302,8 @@ def clickStopRecord():
     encording_pop = tkinter.Toplevel();
     encording_pop.title("인코딩 중...");
     encording_pop.geometry("200x100");
-    label = tkinter.Label(encording_pop, text = "인코딩 중...").pack(pady=20);
-    DataEncoder.encoding(Record.getSaves());
+    tkinter.Label(encording_pop, text = "인코딩 중...").pack(pady=20);
+    recordData = DataEncoder.encoding(Record.get_save());
     #인코딩 완료
     encording_pop.destroy();
     programmode = 0;
