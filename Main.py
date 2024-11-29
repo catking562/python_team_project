@@ -1,10 +1,11 @@
-import tkinter;
+from cProfile import label
+import tkinter
+import tkinter.messagebox;
 from pynput.keyboard import Listener as kl;
 from pynput.mouse import Listener as ml;
-from api import Record, Runner, configSaver;
+from api import Record, Runner, configSaver, DataEncoder;
 import threading;
 import pynput;
-import time;
 
 """PROGRAM이벤트들"""
 programmode = 0 #[정지, 녹화, 시작, 반복시작, 저장, 불러오기, 인코딩, 옵션]
@@ -104,13 +105,13 @@ def repeatRun(dic):
 def on_click(x, y, button, pressed):
     print(x, y, button, pressed);
     if(programmode==1):
-        Record.add_input((time.perf_counter, "click", x, y, button, pressed));
+        Record.add_input(("click", x, y, button, pressed));
 
 #마우스 스크롤 이벤트
 def on_scroll(x, y, dx, dy):
     print(x, y, dx, dy);
     if(programmode==1):
-        Record.add_input((time.perf_counter, "scroll", x, y, dx, dy));
+        Record.add_input(("scroll", x, y, dx, dy));
 
 #키보드 다운 이벤트
 def on_press(key):
@@ -118,14 +119,14 @@ def on_press(key):
     if(runHotKey(key)):
         return;
     if(programmode==1):
-        Record.add_input((time.perf_counter, "press", key));
+        Record.add_input(("press", key));
 
 
 #키보드 업 이벤트
 def on_release(key):
     print(key, "release");
     if(programmode==1):
-        Record.add_input((time.perf_counter, "release", key));
+        Record.add_input(("release", key));
 
 """GUI이벤트들"""
 win = tkinter.Tk();
@@ -261,10 +262,21 @@ def clickRecordStart():
 def clickStopRecord():
     global programmode;
     global isData;
-    programmode = 0;
+    #녹화종료
     isData = True;
+    programmode = 6;
     updateWindow();
     Record.stop();
+    #인코딩
+    encording_pop = tkinter.Toplevel();
+    encording_pop.title("인코딩 중...");
+    encording_pop.geometry("200x100");
+    label = tkinter.Label(encording_pop, text = "인코딩 중...").pack(pady=20);
+    DataEncoder.encoding(Record.getSaves());
+    #인코딩 완료
+    encording_pop.destroy();
+    programmode = 0;
+    updateWindow();
     print("clickStopRecord");
 
 def clickRunStart():
