@@ -54,3 +54,6 @@ def loadFile(fileName):
     
     print(f"파일 로드 성공: {fileloc}")
     return tup
+
+
+# 지금까지 저장된 파일이름을 리스트로 반환
