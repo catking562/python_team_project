@@ -1,28 +1,23 @@
-"""
-참고사항: 받은 dictionary데이터는
-{<다음동작까지 걸리는 시간>:<다음 동작>}
-형태로 이루어져 있음
-"""
-# 직접 생성
-from pynput.keyboard import Button, Controller
-#pynput의 keyboard모듈에 Controller 라는 클래스를 불러옴
+from pynput.mouse import Controller, Button
+from pynput.keyboard import Controller,Key
+import time
 
-mouse=Controller()
-#control.type("hello World")
-#my_tuple = ((3,mouse.position=500,500),(2,"love"),(2,"정우"))
+# Mouse Controller 초기화
+mouse = Controller()
 
-
+my_tuple=((1,'click',Button.left,True),(1,'scroll',1,3,2,4),(2,'press0',Key.enter))
 isStop = False
-
+#tuple에 들어있는 행동들을 반복
 def start(tup):
-    global isStop
+    global isStop , i
     isStop = False
-    #tuple에 들어있는 행동들을 반복
-    for i in range(0,len(tup)):
-            pg.sleep(tup[i][0])
-            if isStop:
-                return True
-            #print(tup[i][1])
+    for i in my_tuple:
+        time.sleep(i[0])
+        case(i[1])
+
+        if isStop:
+            return True
+        
 
 
 def stop():
@@ -36,10 +31,27 @@ def repeatStart(tup):
     isStop = False
     while not isStop: #isstop이 참일 경우 while 루프를 벗어나도록 함
       for i in range(0,len(tup)):
-            pg.sleep(tup[i][0])
+            time.sleep(tup[i][0])
             if isStop: #도중에 정지버튼을 누르면 정지하도록 함
                 return True
-            #print(tup[i][1])
     return True
 
-#repeatStart(my_tuple)
+
+def case(n):
+    if n == "click":
+        type_press = i[1]
+        button = i[2]
+        pressed = i[3]
+        return type_press,button,pressed
+    
+    elif n == "scroll":
+        type_press = i[1]
+        x = i[2]
+        y= i[3]
+        dx = i[4]
+        dy = i[5]
+        return type_press , x, y , dx , dy
+    elif n == "press0":
+        type_press = i[1]
+        key = i[2]
+        return type_press , key
