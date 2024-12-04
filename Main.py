@@ -1,11 +1,11 @@
-from cProfile import label
 import tkinter
 import tkinter.messagebox;
 from pynput.keyboard import Listener as kl;
 from pynput.mouse import Listener as ml;
-from api import Record, Runner, configSaver, DataEncoder, FileSaver;
+from api import Record, Runner, configSaver, DataEncoder, FileSaver, CreatePoP;
 import threading;
 import pynput;
+import time;
 
 """PROGRAM이벤트들"""
 programmode = 0 #[정지, 녹화, 시작, 반복시작, 저장, 불러오기, 인코딩, 옵션]
@@ -87,6 +87,10 @@ def initAllKey():
 #사용자지정파일을 로드함
 def loadOption():
     configSaver.load();
+    """for hotkey in hotkeys:
+        if configSaver.isKey(hotkey):
+            hotkeys[hotkey] = configSaver.get(hotkey);"""
+            #일단 아님 ㅜ
 
 #사용자지정파일을 저장함
 def saveOption():
@@ -105,13 +109,13 @@ def repeatRun(dic):
 def on_click(x, y, button, pressed):
     print(x, y, button, pressed);
     if(programmode==1):
-        Record.add_input(("click", x, y, button, pressed));
+        Record.add_input((time.perf_counter, "click", x, y, button, pressed));
 
 #마우스 스크롤 이벤트
 def on_scroll(x, y, dx, dy):
     print(x, y, dx, dy);
     if(programmode==1):
-        Record.add_input(("scroll", x, y, dx, dy));
+        Record.add_input((time.perf_counter, "scroll", x, y, dx, dy));
 
 #키보드 다운 이벤트
 def on_press(key):
@@ -119,14 +123,18 @@ def on_press(key):
     if(runHotKey(key)):
         return;
     if(programmode==1):
-        Record.add_input(("press", key));
+        Record.add_input((time.perf_counter, "press", key));
+        return;
+    if(programmode==7 and CreatePoP.isneedButton()):
+        CreatePoP.setButton(key);
+        CreatePoP.closeMiniPop();
 
 
 #키보드 업 이벤트
 def on_release(key):
     print(key, "release");
     if(programmode==1):
-        Record.add_input(("release", key));
+        Record.add_input((time.perf_counter, "release", key));
 
 """GUI이벤트들"""
 win = tkinter.Tk();
@@ -248,27 +256,18 @@ def filename_pop_accept():
 def clickFileSave():
     global win;
     global programmode;
-    global filename_pop;
-    global input_value;
-    global input_field;
     programmode = 4;
     updateWindow();
     #파일이름 물어보는 팝업
-    filename_pop = tkinter.Toplevel();
-    filename_pop.title("파일 이름 입력");
-    filename_pop.geometry("400x200");
-    input_field = tkinter.Entry(filename_pop, width=30);
-    input_field.pack(pady=10);
-    tkinter.Button(filename_pop, text="확인", command=filename_pop_accept).pack(pady=10);
-    filename_pop.grab_set();
-    win.wait_window(filename_pop);
+    name = CreatePoP.getFileName(win);
     #저장 중 팝업
-    encording_pop = tkinter.Toplevel();
-    encording_pop.title("저장 중...");
-    encording_pop.geometry("200x100");
-    tkinter.Label(encording_pop, text = "저장 중...").pack(pady=20);
+    CreatePoP.createMessage("저장 중...");
     #저장 시작
-    FileSaver.saveFile(recordData, input_value);
+    FileSaver.saveFile(recordData, name);
+    #저장 끝
+    CreatePoP.destroy();
+    programmode = 0;
+    updateWindow();
     print("clickFileSave");
 
 def clickFileLoad():
@@ -280,6 +279,14 @@ def clickFileLoad():
 
 def clickOption():
     global programmode;
+    global hotkeys;
+    global win;
+    programmode = 7;
+    updateWindow();
+    CreatePoP.editOption(hotkeys, win);
+    initAllKey();
+    programmode = 0;
+    updateWindow();
     print("clickOption");
 
 def clickRecordStart():
@@ -299,19 +306,17 @@ def clickStopRecord():
     updateWindow();
     Record.stop();
     #인코딩
-    encording_pop = tkinter.Toplevel();
-    encording_pop.title("인코딩 중...");
-    encording_pop.geometry("200x100");
-    tkinter.Label(encording_pop, text = "인코딩 중...").pack(pady=20);
+    CreatePoP.createMessage("인코딩 중...");
     recordData = DataEncoder.encoding(Record.get_save());
     #인코딩 완료
-    encording_pop.destroy();
+    CreatePoP.destroy();
     programmode = 0;
     updateWindow();
     print("clickStopRecord");
 
 def clickRunStart():
     global programmode;
+
     programmode = 2;
     updateWindow();
     threading.Thread(target=startRun, args=(Record.getSaves()));
@@ -388,8 +393,6 @@ def initWindow():
     runStart.place(x=100, y=60, width=100, height=95);
     reapeatStart = tkinter.Button(win, text="반복시작", command=clickReapeatStart);
     reapeatStart.place(x=200, y=60, width = 100, height=95);
-
-    
 
 """초기화 시작"""
 initWindow();

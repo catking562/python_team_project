@@ -21,6 +21,11 @@ def add_input(value):
     lock.release()
     return True
 
+def get_save():
+    global control
+    return control
+    
+
 def start():
     global isStop;
     global control

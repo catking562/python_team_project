@@ -54,3 +54,19 @@ def loadFile(fileName):
     
     print(f"파일 로드 성공: {fileloc}")
     return tup
+
+
+# 지금까지 저장된 파일이름을 리스트로 반환
+
+def getSavedFileNames():
+    """
+    data 디렉토리에서 저장된 파일 이름 목록을 반환합니다.
+    """
+    # 데이터 디렉토리가 없으면 빈 리스트 반환
+    if not os.path.exists(DATA_DIR):
+        return []
+
+    # 디렉토리 내 모든 파일 이름 반환
+    return [os.path.splitext(file)[0] for file in os.listdir(DATA_DIR) if file.endswith(".txt")]
+
+#파일목록가져오기
