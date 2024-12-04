@@ -69,3 +69,4 @@ def getSavedFileNames():
     # 디렉토리 내 모든 파일 이름 반환
     return [os.path.splitext(file)[0] for file in os.listdir(DATA_DIR) if file.endswith(".txt")]
 
+#파일목록가져오기
