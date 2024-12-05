@@ -1,7 +1,7 @@
 import time;
 import threading
 
-control = ()
+control = {}
 isStop = False
 
 lock = threading.Lock();
@@ -17,7 +17,7 @@ def add_input(value):
     if isStop:
         return False;
     
-    control += (value,)
+    control.appended(value)
     lock.release()
     return True
 
@@ -32,7 +32,7 @@ def start():
     
     isStop = False;
     startTime = time.perf_counter;
-    control += (startTime, )
+    control.appended(startTime)
     return True;
 
 def stop():
