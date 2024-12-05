@@ -18,4 +18,5 @@ def encoding_Tostr(control):
 def encoding_bystr(save_string):
     control = save_string.split('\n')
     for i in range(len(control)):
-        len
+        return 99;
+    return 99;
