@@ -15,4 +15,4 @@ def encode(control):
     return control;
 
 def encode_str(control):
-    
+    return control
