@@ -6,8 +6,6 @@ isStop = False
 
 lock = threading.Lock();
 
-def get_save():
-    return control;
 
 def add_input(value):
     global isStop;
