@@ -17,6 +17,14 @@ def encoding_Tostr(control):
 
 def encoding_bystr(save_string):
     control = save_string.split('\n')
+    
     for i in range(len(control)):
-        return 99;
-    return 99;
+        control[i] = control[i].split(',')
+        
+    for i in range(len(control)):
+        for j in range(len(control[j])):
+            if (control[i][j].isdigit() == True):
+                control[i][j] = int(control[i][j])
+                
+    return control
+
