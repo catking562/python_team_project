@@ -44,8 +44,11 @@ def stop():
 def type_case(action):
     if action[1] == "click":
         type_press = action[1]
-        button = action[2]
-        pressed = action[3]
+        x = action[2];
+        y = action[3];
+        button = action[4]
+        pressed = action[5]
+        mouse.position = (x, y)
         if pressed==True:
             mouse.press(button)
         else:
@@ -58,15 +61,20 @@ def type_case(action):
         y = action[3]
         dx = action[4]
         dy = action[5]
+        mouse.position = (x, y)
         mouse.scroll(dx, dy)
         #return type_press , x, y, dx, dy
 
-    elif action[1] == "press0":
+    elif action[1] == "press":
         type_press = action[1]
         key = action[2]
         keyboard.press(key)
-        keyboard.release(key)
+        
         #return type_press, key
+    elif action[1] == "release":
+        type_press = action[1];
+        key = action[2];
+        keyboard.release(key);
 
 # 반복적으로 실행하는 함수
 def repeatStart(tup):

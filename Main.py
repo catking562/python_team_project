@@ -320,7 +320,7 @@ def clickRunStart():
     programmode = 2;
     updateWindow();
     print("c")
-    threading.Thread(target=startRun, args=(recordData));
+    startRun(recordData);
     print("clickRunStart");
 
 def clickStopRun():
@@ -335,7 +335,7 @@ def clickReapeatStart():
     global recordData;
     programmode = 3;
     updateWindow();
-    threading.Thread(target=repeatRun, args=(recordData));
+    repeatRun(recordData);
     print("clickReapeatStart");
 
 def clickStopReapeat():

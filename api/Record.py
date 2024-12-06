@@ -28,6 +28,7 @@ def start():
     global isStop;
     global control
     
+    control = [];
     isStop = False;
     startTime = time.perf_counter();
     control.append(startTime)
