@@ -23,8 +23,18 @@ def encoding_bystr(save_string):
         
     for i in range(len(control)):
         for j in range(len(control[j])):
-            if (control[i][j].isdigit() == True):
-                control[i][j] = int(control[i][j])
+            control[i][0] = int(control[i][0])
+            
+            if (control[i][1] == "scroll"):
+                control[i][2] = int(control[i][2])
+                control[i][3] = int(control[i][3])
+                control[i][4] = int(control[i][4])
+                control[i][5] = int(control[i][5])
+            
+            if (control[i][1] == "scroll"):
+                control[i][2] = int(control[i][2])
+                control[i][3] = int(control[i][3])
+                
                 
     return control
 
