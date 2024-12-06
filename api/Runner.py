@@ -25,9 +25,11 @@ isStop = False
 
 #반복 시작
 def start(tup):
+    print("a");
     global isStop  
     isStop = False
     for i in tup:
+        print("b");
         time.sleep(i[0])  
         type_case(i)  
         if isStop:
