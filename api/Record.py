@@ -30,8 +30,6 @@ def start():
     
     control = [];
     isStop = False;
-    startTime = time.perf_counter();
-    control.append(startTime)
     return True;
 
 def stop():
