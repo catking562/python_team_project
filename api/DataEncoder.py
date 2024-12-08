@@ -14,12 +14,10 @@ def encode_save_hotkeys(hotkeys):
     str_hotkeys = repr(temp_dic)
     return str_hotkeys
 
-def encode_load_hotkeys(str_hotkeys, hotkeys):
+def encode_load_hotkeys(str_hotkeys):
     
-    hotkey = eval(str_hotkeys)
+    return eval(str_hotkeys)
     
-    return hotkeys
-
 def encoding_Torun(control):
     startTime = control[0];
     del control[0];
