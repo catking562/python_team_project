@@ -1,6 +1,7 @@
 import pynput;
 
-
+#단축키 딕셔너리를 넣으면 문자열 형태로 변경됨.
+#주의 : 그대로 파일에 써넣기만 할 것
 def encode_save_hotkeys(hotkeys):
     temp_dic = {}
 
@@ -14,6 +15,8 @@ def encode_save_hotkeys(hotkeys):
     str_hotkeys = repr(temp_dic)
     return str_hotkeys
 
+#단축키 문자열을 딕셔너리로 바꿈.
+#사용 방법 : hotkeys = encode_load_hotkeys(str_hotkeys) 형태로 사용
 def encode_load_hotkeys(str_hotkeys):
     
     return eval(str_hotkeys)
