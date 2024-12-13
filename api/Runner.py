@@ -25,11 +25,9 @@ isStop = False
 
 #반복 시작
 def start(tup):
-    print("a");
     global isStop  
     isStop = False
     for i in tup:
-        print("b");
         time.sleep(i[0])  
         type_case(i)  
         if isStop:
@@ -78,7 +76,8 @@ def type_case(action):
 
 # 반복적으로 실행하는 함수
 def repeatStart(tup):
-    global isStop  
+    global isStop;
+    isStop = False;
     while not isStop:
         for i in tup:
             time.sleep(i[0])  

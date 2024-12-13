@@ -27,7 +27,7 @@ def encoding_Torun(control):
     
     for i in range(len(control)) :
         control[i][0] = control[i][0] - startTime #시작 시간으로부터 행동 시간을 뺀 간격.
-
+        startTime = startTime + control[i][0];
     return control;
 
 def encoding_Tostr(control):

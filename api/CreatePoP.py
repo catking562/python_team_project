@@ -89,7 +89,6 @@ def setOption(option, key, num):
         button['state']=tkinter.NORMAL;
     buttons[num]['text'] = str(input_value);
 
-
 def editOption(option, win):
     global encording_pop;
     global buttons;

@@ -87,22 +87,13 @@ def initAllKey():
 #사용자지정파일을 로드함
 def loadOption():
     configSaver.load();
-    """for hotkey in hotkeys:
+    for hotkey in hotkeys:
         if configSaver.isKey(hotkey):
-            hotkeys[hotkey] = configSaver.get(hotkey);"""
-            #일단 아님 ㅜ
+            hotkeys[hotkey] = configSaver.get(hotkey);
 
 #사용자지정파일을 저장함
 def saveOption():
     configSaver.save();
-
-#반복을 시작함
-def startRun(dic):
-    Runner.start(dic);
-
-#반복을 종료함
-def repeatRun(dic):
-    Runner.repeatStart(dic);
 
 """입력 이벤트들"""
 #마우스 클릭 이벤트
@@ -317,10 +308,15 @@ def clickStopRecord():
 def clickRunStart():
     global programmode;
     global recordData;
+
+    #반복을 시작함
+    def startRun(dic):
+        Runner.start(dic);
+
     programmode = 2;
     updateWindow();
-    print("c")
-    startRun(recordData);
+    task = threading.Thread(target=startRun, args=(recordData,));
+    task.start();
     print("clickRunStart");
 
 def clickStopRun():
@@ -333,9 +329,15 @@ def clickStopRun():
 def clickReapeatStart():
     global programmode;
     global recordData;
+
+    #반복을 종료함
+    def repeatRun(dic):
+        Runner.repeatStart(dic);
+
     programmode = 3;
     updateWindow();
-    repeatRun(recordData);
+    task = threading.Thread(target=repeatRun, args=(recordData,));
+    task.start();
     print("clickReapeatStart");
 
 def clickStopReapeat():
