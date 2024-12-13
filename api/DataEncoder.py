@@ -6,11 +6,8 @@ def encode_save_hotkeys(hotkeys):
     temp_dic = {}
 
     for key, value in hotkeys.items():
-        if isinstance(value, str):
-            temp_dic[key] = value
-        else:
-            str_value = str(value)
-            temp_dic[key] = "pynput.keybord." + str_value
+        str_value = str(value)
+        temp_dic[key] = "pynput.keybord." + str_value
     
     str_hotkeys = repr(temp_dic)
     return str_hotkeys
