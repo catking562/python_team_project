@@ -15,7 +15,7 @@ mouse = Controller()
 keyboard = KeyboardController()
 
 """ 
-my_tuple = [
+my_list = [
     (1, 'click', Button.left, True),  
     (1, 'scroll', 1, 3, 2, 4),       
     (2, 'press0', Key.enter)          
