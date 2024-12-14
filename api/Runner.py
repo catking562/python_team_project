@@ -14,17 +14,17 @@ import time
 mouse = Controller()
 keyboard = KeyboardController()
 
-
+""" 
 my_tuple = [
     (1, 'click', Button.left, True),  
     (1, 'scroll', 1, 3, 2, 4),       
     (2, 'press0', Key.enter)          
 ]
-
+"""
 isStop = False  
 
 #반복 시작
-def start(tup):
+def start(lst):
     global isStop  
     isStop = False
     for i in tup:
@@ -33,7 +33,7 @@ def start(tup):
         if isStop:
             return True
 
-# 반복을 멈추는 함수
+# 반복을 멈추는 함수 thread를 통해 다른 파이썬 파일에 의해 멈추는 기능 포함
 def stop():
     global isStop
     isStop = True
@@ -75,11 +75,11 @@ def type_case(action):
         keyboard.release(key);
 
 # 반복적으로 실행하는 함수
-def repeatStart(tup):
+def repeatStart(lst):
     global isStop;
     isStop = False;
-    while not isStop:
-        for i in tup:
+    while not isStop: 
+        for i in lst:
             time.sleep(i[0])  
             type_case(i)  
             if isStop:
