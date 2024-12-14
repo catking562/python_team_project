@@ -27,7 +27,7 @@ isStop = False
 def start(lst):
     global isStop  
     isStop = False
-    for i in tup:
+    for i in lst:
         time.sleep(i[0])  
         type_case(i)  
         if isStop:
