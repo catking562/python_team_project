@@ -51,7 +51,7 @@ def getFileName(win):
 def setButton(key):
     global input_value;
     global isNeedButton;
-    input_value = key;
+    input_value = str(key);
     isNeedButton = False;
 
 def closeMiniPop():
@@ -102,5 +102,24 @@ def editOption(option, win):
         button = tkinter.Button(encording_pop, text=str(option[key]), command=lambda k=key, num=a:setOption(option, k, num));
         buttons.append(button);
         button.place(x=100, y=30*a, width=200, height=30);
+        a=a+1;
+    win.wait_window(encording_pop);
+
+def returnSelect(r):
+    global encording_pop;
+    global input_value;
+    input_value = r;
+    encording_pop.destroy();
+
+def getSelectInList(list, win):
+    global encording_pop;
+    global input_value;
+    encording_pop = tkinter.Toplevel();
+    encording_pop.title("파일 불러오기");
+    encording_pop.geometry("300x"+str(30*len(list)));
+    a = 0;
+    for file in list:
+        button = tkinter.Button(encording_pop, text = file, command=lambda r=file:returnSelect(r));
+        button.place(x=0, y=30*a, width = 300, height=30);
         a=a+1;
     win.wait_window(encording_pop);

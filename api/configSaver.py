@@ -6,6 +6,9 @@ CONFIG_FILE = "option.txt"
 # 내부 저장소
 _config_data = {}
 
+def get_All():
+    global _config_data;
+    return _config_data;
 
 def get(key):
     """키에 해당하는 값을 반환."""

@@ -1,3 +1,4 @@
+import string
 import tkinter
 import tkinter.messagebox;
 from pynput.keyboard import Listener as kl;
@@ -11,12 +12,12 @@ import time;
 programmode = 0 #[정지, 녹화, 시작, 반복시작, 저장, 불러오기, 인코딩, 옵션]
 
 #단축키 정리
-hotkeys = {"recordStart":pynput.keyboard.Key.f9,
-           "recordStop":pynput.keyboard.Key.f9,
-           "startRun":pynput.keyboard.Key.f10,
-           "stopRun":pynput.keyboard.Key.f10,
-           "repeatRun":pynput.keyboard.Key.f11,
-           "stoprRun":pynput.keyboard.Key.f11};
+hotkeys = {"recordStart":"Key.f9",
+           "recordStop":"Key.f9",
+           "startRun":"Key.f10",
+           "stopRun":"Key.f10",
+           "repeatRun":"Key.f11",
+           "stoprRun":"Key.f11"};
 
 #각 키에 무슨 이벤트들이 있는지 모두 정리
 keydata = {};
@@ -58,8 +59,8 @@ def actionEvent(name):
 #실행이 되지 않으면 0을 반환
 def runHotKey(Key):
     global keydata;
-    if Key in keydata:
-        for act in keydata[Key].split(","):
+    if str(Key) in keydata:
+        for act in keydata[str(Key)].split(","):
             if(actionEvent(act)):
                 return 1;
     return 0;
@@ -86,13 +87,19 @@ def initAllKey():
 
 #사용자지정파일을 로드함
 def loadOption():
+    global hotkeys;
     configSaver.load();
     for hotkey in hotkeys:
-        if configSaver.isKey(hotkey):
-            hotkeys[hotkey] = configSaver.get(hotkey);
+        if not configSaver.isKey(hotkey):
+            configSaver.put(hotkey, hotkeys[hotkey]);
+    for hotkey in configSaver.get_All():
+        hotkeys[hotkey] = configSaver.get(hotkey);
 
 #사용자지정파일을 저장함
 def saveOption():
+    global hotkeys;
+    for hotkey in hotkeys:
+        configSaver.put(hotkey, str(hotkeys[hotkey]));
     configSaver.save();
 
 """입력 이벤트들"""
@@ -254,7 +261,7 @@ def clickFileSave():
     #저장 중 팝업
     CreatePoP.createMessage("저장 중...");
     #저장 시작
-    FileSaver.saveFile(recordData, name);
+    FileSaver.saveFile(DataEncoder.encoding_Tostr(recordData), name);
     #저장 끝
     CreatePoP.destroy();
     programmode = 0;
@@ -276,6 +283,7 @@ def clickOption():
     updateWindow();
     CreatePoP.editOption(hotkeys, win);
     initAllKey();
+    saveOption();
     programmode = 0;
     updateWindow();
     print("clickOption");
@@ -403,7 +411,6 @@ initWindow();
 updateWindow();
 loadOption();
 initAllKey();
-print(keydata);
 
 """프로그램 동작"""
 with ml(on_click=on_click, on_scroll=on_scroll) as listener:

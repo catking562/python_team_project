@@ -1,6 +1,6 @@
 import os
 
-def saveFile(control_str, fileName):
+def saveFile(control, fileName):
     """
     튜플 데이터를 지정된 파일에 저장합니다.
     (시간, 동작) 형태의 튜플을 저장
@@ -34,10 +34,10 @@ def getSavedFileNames():
     data 디렉토리에서 저장된 파일 이름 목록을 반환합니다.
     """
     # 데이터 디렉토리가 없으면 빈 리스트 반환
-    if not os.path.exists(DATA_DIR):
+    if not os.path.exists(f"data"):
         return []
 
     # 디렉토리 내 모든 파일 이름 반환
-    return [os.path.splitext(file)[0] for file in os.listdir(DATA_DIR) if file.endswith(".txt")]
+    return [os.path.splitext(file)[0] for file in os.listdir(f"data") if file.endswith(".txt")]
 
 #파일목록가져오기
