@@ -1,12 +1,13 @@
+from asyncio.windows_events import NULL
 import string
 import tkinter
 import tkinter.messagebox;
 from pynput.keyboard import Listener as kl;
 from pynput.mouse import Listener as ml;
-from api import Record, Runner, configSaver, DataEncoder, FileSaver, CreatePoP;
 import threading;
 import pynput;
 import time;
+from api import Record, Runner, configSaver, FileSaver, CreatePoP, DataEncoder;
 
 """PROGRAM이벤트들"""
 programmode = 0 #[정지, 녹화, 시작, 반복시작, 저장, 불러오기, 인코딩, 옵션]
@@ -261,7 +262,8 @@ def clickFileSave():
     #저장 중 팝업
     CreatePoP.createMessage("저장 중...");
     #저장 시작
-    FileSaver.saveFile(DataEncoder.encoding_Tostr(recordData), name);
+    if(name!=None):
+        FileSaver.saveFile(DataEncoder.encoding_Tostr(recordData), name);
     #저장 끝
     CreatePoP.destroy();
     programmode = 0;
@@ -271,7 +273,14 @@ def clickFileSave():
 def clickFileLoad():
     global programmode;
     global isData;
-    isData = True;
+    global recordData;
+    programmode = 5;
+    updateWindow();
+    sel = CreatePoP.getSelectInList(FileSaver.getSavedFileNames(), win);
+    if(sel!=None):
+        recordData = DataEncoder.encoding_bystr(FileSaver.loadFile(sel));
+        isData = True;
+    programmode = 0;
     updateWindow();
     print("clickFileLoad");
 

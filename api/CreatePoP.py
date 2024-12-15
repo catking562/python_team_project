@@ -34,7 +34,7 @@ def getFileName(win):
     global input_value;
     global input_field;
     #생성
-    input_value = "";
+    input_value = None;
     encording_pop = tkinter.Toplevel();
     encording_pop.title("파일 이름 입력");
     encording_pop.geometry("200x80");
@@ -114,6 +114,7 @@ def returnSelect(r):
 def getSelectInList(list, win):
     global encording_pop;
     global input_value;
+    input_value = None;
     encording_pop = tkinter.Toplevel();
     encording_pop.title("파일 불러오기");
     encording_pop.geometry("300x"+str(30*len(list)));
@@ -123,3 +124,4 @@ def getSelectInList(list, win):
         button.place(x=0, y=30*a, width = 300, height=30);
         a=a+1;
     win.wait_window(encording_pop);
+    return input_value;

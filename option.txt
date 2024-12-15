@@ -1,0 +1,6 @@
+recordStart = Key.f9
+recordStop = Key.f9
+startRun = Key.f10
+stopRun = Key.f10
+repeatRun = Key.f11
+stoprRun = Key.f11

@@ -1,14 +1,12 @@
 import pynput;
 from pynput.keyboard import Key
 
-
 # Key 클래스의 __repr__을 재정의
 def custom_repr(self):
-    return f"{self.value}"
+    return f"{self}"
 
 # Key 클래스의 __repr__ 메서드 변경
 Key.__repr__ = custom_repr
-
 
 #단축키 딕셔너리를 넣으면 문자열 형태로 변경됨.
 #주의 : 그대로 파일에 써넣기만 할 것
@@ -37,4 +35,3 @@ def encoding_Tostr(control):
 def encoding_bystr(save_string):
     control = eval(save_string)
     return control
-

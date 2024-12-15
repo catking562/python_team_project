@@ -21,7 +21,7 @@ def loadFile(fileName):
     fileloc = f"data/{fileName}.txt"    
     # 파일을 읽기 모드로 열기
     with open(fileloc, "r", encoding="utf-8") as file:
-        action_str = file.readlines()
+        action_str = file.readline()
     
     print(f"파일 로드 성공: {fileloc}")
     return action_str
