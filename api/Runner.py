@@ -14,6 +14,7 @@ import time
 mouse = Controller()
 keyboard = KeyboardController()
 
+press_set = set()
 
 my_tuple = [
     (1, 'click', Button.left, True),  
@@ -31,6 +32,9 @@ def start(tup):
         time.sleep(i[0])  
         type_case(i)  
         if isStop:
+            for i in press_set:
+                keyboard.release(i);
+                
             return True
 
 # 반복을 멈추는 함수
@@ -40,6 +44,7 @@ def stop():
 
 # 행동 처리 함수
 def type_case(action):
+    global press_set
     if action[1] == "click":
         type_press = action[1]
         x = action[2];
@@ -66,12 +71,15 @@ def type_case(action):
     elif action[1] == "press":
         type_press = action[1]
         key = action[2]
+        press_set.add(action[2])
+
         keyboard.press(key)
         
         #return type_press, key
     elif action[1] == "release":
         type_press = action[1];
         key = action[2];
+        press_set.discard(action[2])
         keyboard.release(key);
 
 # 반복적으로 실행하는 함수
@@ -80,7 +88,9 @@ def repeatStart(tup):
     isStop = False;
     while not isStop:
         for i in tup:
-            time.sleep(i[0])  
+            time.sleep(i[0]) 
             type_case(i)  
             if isStop:
+                for i in press_set:
+                    keyboard.release(i)
                 return True

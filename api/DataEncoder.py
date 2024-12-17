@@ -21,6 +21,8 @@ def encode_load_hotkeys(str_hotkeys):
     
 def encoding_Torun(control):
     control = sorted(control, key = lambda x:x[0])
+    if len(control)==0:
+        return control;
     startTime = control[0][0]
     
     for i in range(len(control)) :

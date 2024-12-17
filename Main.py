@@ -1,5 +1,3 @@
-from asyncio.windows_events import NULL
-import string
 import tkinter
 import tkinter.messagebox;
 from pynput.keyboard import Listener as kl;
@@ -8,6 +6,8 @@ import threading;
 import pynput;
 import time;
 from api import Record, Runner, configSaver, FileSaver, CreatePoP, DataEncoder;
+
+"""버그방지용"""
 
 """PROGRAM이벤트들"""
 programmode = 0 #[정지, 녹화, 시작, 반복시작, 저장, 불러오기, 인코딩, 옵션]
@@ -160,7 +160,6 @@ def updateWindow():
     global isData;
     match(programmode):
         case 0: #정지
-            fileSave["state"] = tkinter.NORMAL;
             fileLoad["state"] = tkinter.NORMAL;
             option["state"] = tkinter.NORMAL;
             recordStart["state"] = tkinter.NORMAL;
@@ -170,9 +169,11 @@ def updateWindow():
             if(isData):
                 runStart["state"] = tkinter.NORMAL;
                 reapeatStart["state"] = tkinter.NORMAL;
+                fileSave["state"] = tkinter.NORMAL;
             else:
                 runStart["state"] = tkinter.DISABLED;
                 reapeatStart["state"] = tkinter.DISABLED;
+                fileSave["state"] = tkinter.DISABLED;
             return;
         case 1: #녹화
             fileSave["state"] = tkinter.DISABLED;
