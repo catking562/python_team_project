@@ -19,7 +19,7 @@ def encode_save_hotkeys(hotkeys):
 def encode_load_hotkeys(str_hotkeys):
     return eval(str_hotkeys)
 
-def encoding_Torun(control, x_dpi):
+def encoding_Torun(control):
     control = sorted(control, key = lambda x:x[0])
     if len(control)==0:
         return control;
