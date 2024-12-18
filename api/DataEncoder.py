@@ -18,8 +18,8 @@ def encode_save_hotkeys(hotkeys):
 #사용 방법 : hotkeys = encode_load_hotkeys(str_hotkeys) 형태로 사용
 def encode_load_hotkeys(str_hotkeys):
     return eval(str_hotkeys)
-    
-def encoding_Torun(control):
+
+def encoding_Torun(control, x_dpi):
     control = sorted(control, key = lambda x:x[0])
     if len(control)==0:
         return control;
@@ -28,6 +28,16 @@ def encoding_Torun(control):
     for i in range(len(control)) :
         control[i][0] = control[i][0] - startTime #시작 시간으로부터 행동 시간을 뺀 간격.
         startTime = startTime + control[i][0];
+        
+        if control[i][1] == "click":
+            if control[i][5] ==True:
+                start_x, start_y = control[i][2], control[i][3]
+            else:
+                print(control[i])
+                turm_x, turm_y = control[i][2] - start_x, control[i][3] - start_y
+                control[i].append(turm_x)
+                control[i].append(turm_x)
+
     return control;
 
 def encoding_Tostr(control):
