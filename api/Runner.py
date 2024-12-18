@@ -46,15 +46,27 @@ def stop():
 def type_case(action):
     global press_set
     if action[1] == "click":
+        steps = 1/1000  # 드래그를 부드럽게 하기 위한 단계 수
+
         type_press = action[1]
         x = action[2];
         y = action[3];
         button = action[4]
         pressed = action[5]
-        mouse.position = (x, y)
+        
+        
         if pressed==True:
+            mouse.position = (x, y)
             mouse.press(button)
+            
         else:
+            for i in range(1000):
+                # 중간 위치 계산
+                current_x = x + action[6] * steps * i
+                current_y = y + action[7] * steps * i
+                mouse.position = (current_x, current_y)
+                
+            mouse.position = (x, y)
             mouse.release(button)
         #return type_press , button , pressed
 
