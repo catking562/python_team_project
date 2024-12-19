@@ -20,49 +20,57 @@ hotkeys = {"recordStart":"Key.f9", #녹화시작: f9
            "repeatRun":"Key.f11", #반복: f11
            "stoprRun":"Key.f11"}; #반복종료: f11
 
-#각 키에 무슨 이벤트들이 있는지 모두 정리
+#특정 이벤트를 발생하는 키와 그에 해당하는 이벤트를 딕셔너리 형태로 저장
+"""
+ex) keydata = {"Key.f9":"recordStart", "recordStop", ...}
+f9를 누르면 recordStart 혹은 recordStop에 해당하는 이벤트를 발생하므로 위와 같은 형태로 딕셔너리에 저장
+이렇게 저장된 keydata는 actionEvent를 통하여 단축키 이벤트를 수행.
+"""
 keydata = {}; 
 
 #이벤트 실행, 실행 불가능하면 0을 반환
+#단축키를 누르면 발생되고, 변수는 누른 단축키와 매칭되어 있는 이름을 변수로 사용
 def actionEvent(name): 
     global recordStart;  #녹화 버튼 참조
     global runStart; #실행 버튼 참조
     global reapeatStart; #반복 실행 버튼 참조
     global programmode; #현재 프로그램 상태 참조
-    match(name):  #각 이벤트가 들어오면 해당하는 코드를 실행함.
-        case "recordStart": #녹화 시작 이벤트
-            if(recordStart["state"]==tkinter.NORMAL and programmode==0): #실행 가능 상태 확인
-                recordStart.invoke(); #버튼을 클릭함.
+
+    # (버튼함수).invoke() => 해당 버튼이 눌려지는 처리
+    # 어떤 버튼이 눌리면 다른 버튼이 활성화/비활성화가 되며, 시작 버튼 <-> 종료 버튼 상태가 바뀜.      
+    match(name):  #누른 단축키에 따른 이벤트 활성화
+        case "recordStart": #녹화 시작 단축키를 누르면 발생하는 이벤트
+            if(recordStart["state"]==tkinter.NORMAL and programmode==0): #조건: 녹화 버튼이 활성화 된 상태이고, 프로그램 모드가 정지 상태
+                recordStart.invoke(); #녹화 시작 버튼이 눌림
                 return 1;
-        case "recordStop": #녹화 중지 이벤트
-            if(recordStart["state"]==tkinter.NORMAL and programmode==1):
-                recordStart.invoke();
+        case "recordStop": #녹화 중지 단축키를 누르면 발생하는 이벤트
+            if(recordStart["state"]==tkinter.NORMAL and programmode==1): #조건 : 녹화 종료 버튼(녹화 버튼이었던 것)이 활성화 상태이고, 프로그램 모드가 녹화 상태
+                recordStart.invoke(); #녹화 종료 버튼이 눌림
                 return 1;
-        case "startRun": #녹화 실행 이벤트
-            if(runStart["state"]==tkinter.NORMAL and programmode==0):
-                runStart.invoke();
+        case "startRun": #시작 단축키를 누르면 발생하는 이벤트
+            if(runStart["state"]==tkinter.NORMAL and programmode==0): #조건: 시작 버튼이 활성화 되어있고, 프로그램 모드가 정지 상태
+                runStart.invoke(); #시작 버튼이 눌림
                 return 1;
-        case "stopRun": #실행 종료 이벤트
-            if(runStart["state"]==tkinter.NORMAL and programmode==2):
-                runStart.invoke();
+        case "stopRun": #시작 종료 단축키를 누르면 발생하는 이벤트
+            if(runStart["state"]==tkinter.NORMAL and programmode==2): #조건: 시작 종료 버튼(시작 버튼이었던 것)이 활성화 상태이고, 프로그램 모드가 시작 상태
+                runStart.invoke(); #시작 종료 버튼이 눌림
                 return 1;
-        case "repeatRun": #반복 시작 이벤트
-            if(reapeatStart["state"]==tkinter.NORMAL and programmode==0):
-                reapeatStart.invoke();
+        case "repeatRun": #반복 시작 단축키를 누르면 발생하는 이벤트
+            if(reapeatStart["state"]==tkinter.NORMAL and programmode==0): #조건: 반복 시작 버튼이 활성화 상태, 프로그램 모드가 정지 상태
+                reapeatStart.invoke(); #반복 시작 버튼이 눌림
                 return 1;
-        case "stoprRun": #반복 중지 이벤트
-            if(reapeatStart["state"]==tkinter.NORMAL and programmode==3):
-                reapeatStart.invoke();
+        case "stoprRun": #반복 중지 단축키를 누르면 발생하는 이벤트
+            if(reapeatStart["state"]==tkinter.NORMAL and programmode==3): #조건: 반복 중지 버튼(반복 시작 버튼이었던 것)이 활성화 상태, 프로그램 모드가 반복 실행 상태
+                reapeatStart.invoke(); #반복 종료 버튼이 눌림.
                 return 1;
     return 0; #이벤트 실행 불가 시 0을 반환
 
-#Key에 해당하는 이벤트를 실행(하나만)
+#키보드 인식 함수를 통해서 키가 눌릴 때마다 단축키인지 확인 및 단축키에 해당하는 함수를 실행
 #실행이 되지 않으면 0을 반환
 def runHotKey(Key):
-    #특정 키를 눌렀을 때 해당 키에 매핑된 이벤트를 실행.
     global keydata;
-    if str(Key) in keydata: #입력된 키가 keydata에 존재하는지 확인
-        for act in keydata[str(Key)].split(","):  #','를 구분자로 배열되어 있는 것을 분리하고, 각 이벤트 실행 (하나라도 실행성공하면 return 1)
+    if str(Key) in keydata: #입력된 키보드의 키가 keydata 딕셔너리에서 존재하는지 확인(단축키인지 확인하는 if문)
+        for act in keydata[str(Key)].split(","):  #keydate에서 
             if(actionEvent(act)): #이벤트 실행 성공 시
                 return 1;
     return 0;
