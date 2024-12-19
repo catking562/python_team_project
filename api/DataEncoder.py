@@ -1,14 +1,25 @@
 import pynput;
 from pynput.keyboard import Key
+from pynput.mouse import Button
+
+# Button 클래스의 __repr__을 재정의
+def B_custom_repr(self):
+    return f"{self}"  # 원하는 형식으로 문자열 반환
+
+# Button 클래스의 __repr__ 메서드 변경
+Button.__repr__ = B_custom_repr
+
+
 
 # Key 클래스의 __repr__을 재정의
-def custom_repr(self):
+def K_custom_repr(self):
     return f"{self}"  # Key 객체를 그대로 문자열로 표현
-
 
 # Key 클래스의 __repr__ 메서드 변경
 # Key 객체가 repr함수로 변환할 때, 문자열로 표시되는 방식을 사용자 정의
-Key.__repr__ = custom_repr
+Key.__repr__ = K_custom_repr
+
+
 
 #녹화를 통해 저장된 데이터를 가공하여 Runner로 넘기는 함수
 def encoding_Torun(control):
@@ -49,6 +60,8 @@ def encoding_Tostr(control):
 
 #들어온 문자열 형태의 동작 데이터를 리스트로 변환
 def encoding_bystr(save_string):
+    
+    print(save_string)
     #repr를 통해 다시 생성 가능한 문자열 형태이므로 eval만 사용 시, 완
     control = eval(save_string)
     return control
