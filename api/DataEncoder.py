@@ -29,7 +29,16 @@ def encoding_Torun(control):
         #이전 출력 이벤트에서 시간 간격을 계산 후, control에 대입
         control[i][0] = control[i][0] - startTime #시작 시간으로부터 행동 시간을 뺀 간격.
         startTime = startTime + control[i][0];
-
+        
+        if control[i][1] == "click":
+            if control[i][5] ==True:
+                start_x, start_y = control[i][2], control[i][3]
+            else:
+                print(control[i])
+                turm_x, turm_y = control[i][2] - start_x, control[i][3] - start_y
+                control[i].append(turm_x)
+                control[i].append(turm_x)
+                
     return control;
 
 #들어온 데이터를 문자열로 반환
@@ -43,3 +52,4 @@ def encoding_bystr(save_string):
     #repr를 통해 다시 생성 가능한 문자열 형태이므로 eval만 사용 시, 완
     control = eval(save_string)
     return control
+
