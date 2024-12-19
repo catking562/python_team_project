@@ -36,8 +36,15 @@ def getSavedFileNames():
     if not os.path.exists(f"data"):
         return []
 
-    # 디렉토리 내 모든 파일 이름 반환
-    # os.listdir(파일 이름)으로 [ 
+    """
+    디렉토리 내 모든 파일 이름 반환
+    # os.listdir(폴더 이름)함수: 폴더 안에 있는 파일들을 [파일 이름1, 파일 이름2 ...]의 형태로 반환
+    # 반환된 파일 리스트를 for문을 통하여 파일 이름의 확장자가 txt인 것을 if문으로 확인
+    # 확인된 파일은 os.path.splitext(file)[0]에 전달
+    # os.path.splitext(file)는 (파일 이름, 확장자)의 튜플을 반환.
+    # os.path.splitext(file)[0] 으로 파일 이름을 반환
+    """
     return [os.path.splitext(file)[0] for file in os.listdir(f"data") if file.endswith(".txt")]
 
 #파일목록가져오기
+
