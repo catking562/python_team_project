@@ -1,11 +1,5 @@
-"""
-참고사항: 받은 dictionary데이터는
-{<다음동작까지 걸리는 시간>:<다음 동작>}
-형태로 이루어져 있음
-"""
-# 직접 생성 
 
-from pynput.keyboard import Controller #Controller: 키보드 값을 출력
+from pynput.keyboard import Controller #Controller: 들어온 데이터를 출력
 #pynput의 keyboard모듈에 Controller 라는 클래스를 불러옴
 from pynput.mouse import Controller, Button
 from pynput.keyboard import Controller as KeyboardController, Key
@@ -19,7 +13,7 @@ press_set = set()
 #행동 예시
 my_list = [
     [1, 'click', Button.left, True],  #[시간간격 , 행위, 버튼양식 , 버튼이 눌러있는 경우]
-    [1, 'scroll', 1, 3, 2, 4],        #[시간간격 , 행위, x , y , dx, dy]
+    [1, 'scroll', 1, 3, 2, 4],        #[시간간격 , 행위, x , y , x변화량, y변화량]
     [2, 'press0', Key.enter]         #[시간간격 , 행위 , 키 입력 종류]
 ]
 #현재 Stop이 False로 초기화 :Stop비활성화 상태
@@ -79,7 +73,7 @@ def type_case(action):
         dy = action[5]
         mouse.position = (x, y) #출력
         mouse.scroll(dx, dy)
-        #return type_press , x, y, dx, dy
+        #return type_press , x, y, dx, dy 
 
          #키를 누른 경우
     elif action[1] == "press":
