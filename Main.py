@@ -10,7 +10,7 @@ from api import Record, Runner, configSaver, FileSaver, CreatePoP, DataEncoder; 
 """버그방지용"""
 
 """PROGRAM이벤트들"""
-programmode = 0 #[정지, 녹화, 시작, 반복시작, 저장, 불러오기, 인코딩, 옵션]
+programmode = 0 #[0: 정지, 1:녹화, 2:시작, 3:반복시작, 4:저장, 5:불러오기, 6:인코딩, 7:옵션]
 
 #단축키 정리 (초기화된 단축키)
 hotkeys = {"recordStart":"Key.f9", #녹화시작: f9
@@ -25,49 +25,51 @@ keydata = {};
 
 #이벤트 실행, 실행 불가능하면 0을 반환
 def actionEvent(name): 
-    global recordStart; 
-    global runStart;
-    global reapeatStart;
-    global programmode;
+    global recordStart;  #녹화 버튼 참조
+    global runStart; #실행 버튼 참조
+    global reapeatStart; #반복 실행 버튼 참조
+    global programmode; #현재 프로그램 상태 참조
     match(name):  #각 이벤트가 들어오면 해당하는 코드를 실행함.
-        case "recordStart":
-            if(recordStart["state"]==tkinter.NORMAL and programmode==0):
+        case "recordStart": #녹화 시작 이벤트
+            if(recordStart["state"]==tkinter.NORMAL and programmode==0): #실행 가능 상태 확인
                 recordStart.invoke(); #버튼을 클릭함.
                 return 1;
-        case "recordStop":
+        case "recordStop": #녹화 중지 이벤트
             if(recordStart["state"]==tkinter.NORMAL and programmode==1):
                 recordStart.invoke();
                 return 1;
-        case "startRun":
+        case "startRun": #녹화 실행 이벤트
             if(runStart["state"]==tkinter.NORMAL and programmode==0):
                 runStart.invoke();
                 return 1;
-        case "stopRun":
+        case "stopRun": #실행 종료 이벤트
             if(runStart["state"]==tkinter.NORMAL and programmode==2):
                 runStart.invoke();
                 return 1;
-        case "repeatRun":
+        case "repeatRun": #반복 시작 이벤트
             if(reapeatStart["state"]==tkinter.NORMAL and programmode==0):
                 reapeatStart.invoke();
                 return 1;
-        case "stoprRun":
+        case "stoprRun": #반복 중지 이벤트
             if(reapeatStart["state"]==tkinter.NORMAL and programmode==3):
                 reapeatStart.invoke();
                 return 1;
-    return 0;
+    return 0; #이벤트 실행 불가 시 0을 반환
 
 #Key에 해당하는 이벤트를 실행(하나만)
 #실행이 되지 않으면 0을 반환
 def runHotKey(Key):
+    #특정 키를 눌렀을 때 해당 키에 매핑된 이벤트를 실행.
     global keydata;
-    if str(Key) in keydata:
+    if str(Key) in keydata: #입력된 키가 keydata에 존재하는지 확인
         for act in keydata[str(Key)].split(","):  #','를 구분자로 배열되어 있는 것을 분리하고, 각 이벤트 실행 (하나라도 실행성공하면 return 1)
-            if(actionEvent(act)):
+            if(actionEvent(act)): #이벤트 실행 성공 시
                 return 1;
     return 0;
 
 #하나의 Keydata를 생성
 def loadKey(active, key):
+     #특정 키에 이벤트를 연결 . 같은 키에 여러 이벤트가 연결될 경우 ','로 구분해 저장
     global keydata;
     if key in keydata:
         keydata[key] = keydata[key]+","+active;  #비슷한 단축키가 있는 경우, ','를 구분자로 해서 저장함.
@@ -81,6 +83,7 @@ def clearAllKey():
 
 #hotkeys데이터를 바탕으로 모든 keydata를 생성
 def initAllKey():
+    #hokeys딕셔너리를 기반으로 keydata를 초기화
     clearAllKey();
     global hotkeys;
     for key in hotkeys:
@@ -88,6 +91,7 @@ def initAllKey():
 
 #사용자지정파일을 로드함
 def loadOption():
+    #사용자 설정 파일을 로드하고 , hotkeys에 반영
     global hotkeys;
     configSaver.load();  #option.txt파일을 로드함.
     for hotkey in hotkeys:
@@ -106,12 +110,14 @@ def saveOption():
 """입력 이벤트들"""
 #마우스 클릭 이벤트
 def on_click(x, y, button, pressed):
+    #마우스 클릭 이벤트 발생 시 실행. 녹화 중일 경우 해당 데이터를 Record에 저장
     print(x, y, button, pressed);
     if(programmode==1):                                                           #녹화중인지 확인
         Record.add_input([time.perf_counter(), "click", x, y, button, pressed]);  #Record에 데이터를 보냄
 
 #마우스 스크롤 이벤트
 def on_scroll(x, y, dx, dy):
+    #마찬가지로 마우스 스크롤 이벤트 발생 시.
     print(x, y, dx, dy);
     if(programmode==1):                                                     #녹화중인지 확인
         Record.add_input([time.perf_counter(), "scroll", x, y, dx, dy]);    #Record에 데이터를 보냄
