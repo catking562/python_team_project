@@ -1,9 +1,9 @@
-import tkinter
-import tkinter.messagebox;
-from pynput.keyboard import Listener as kl;
-from pynput.mouse import Listener as ml;
-import threading;
-import pynput;
+import tkinter #gui 생성 모듈
+import tkinter.messagebox; #메시지박스 생성 모듈
+from pynput.keyboard import Listener as kl; #키보드 키 입력 감지
+from pynput.mouse import Listener as ml; # 마우스 키 입력 감지
+import threading; #파이썬 파일의 동시 접근을 위한 모듈
+import pynput;  
 import time;
 from api import Record, Runner, configSaver, FileSaver, CreatePoP, DataEncoder; #api 폴더에서 각 파일들을 임포트
 
@@ -12,20 +12,20 @@ from api import Record, Runner, configSaver, FileSaver, CreatePoP, DataEncoder; 
 """PROGRAM이벤트들"""
 programmode = 0 #[정지, 녹화, 시작, 반복시작, 저장, 불러오기, 인코딩, 옵션]
 
-#단축키 정리
-hotkeys = {"recordStart":"Key.f9",
-           "recordStop":"Key.f9",
-           "startRun":"Key.f10",
-           "stopRun":"Key.f10",
-           "repeatRun":"Key.f11",
-           "stoprRun":"Key.f11"};
+#단축키 정리 (초기화된 단축키)
+hotkeys = {"recordStart":"Key.f9", #녹화시작: f9
+           "recordStop":"Key.f9", #녹화멈춤 : f9
+           "startRun":"Key.f10",  #시작: f10
+           "stopRun":"Key.f10", #종료: f10
+           "repeatRun":"Key.f11", #반복: f11
+           "stoprRun":"Key.f11"}; #반복종료: f11
 
 #각 키에 무슨 이벤트들이 있는지 모두 정리
-keydata = {};
+keydata = {}; 
 
 #이벤트 실행, 실행 불가능하면 0을 반환
-def actionEvent(name):
-    global recordStart;
+def actionEvent(name): 
+    global recordStart; 
     global runStart;
     global reapeatStart;
     global programmode;
