@@ -430,12 +430,18 @@ def initWindow():
     reapeatStart.place(x=200, y=60, width = 100, height=95);
 
 """초기화 시작"""
-initWindow();
-updateWindow();
-loadOption();
-initAllKey();
+initWindow(); #GUI창을 초기화. 버튼 생성 및 배치, 변수 초기화
+updateWindow(); #초기 상태에 맞춰 gui업데이트. 버튼 상태 및 텍스트 초기화
+loadOption(); #사용자 설정 파일을 불러와 단축키 등의 설정을 초기화
+initAllKey(); #단축키 데이터를 기반으로 키 이벤트를 매핑
 
 """프로그램 동작"""
-with ml(on_click=on_click, on_scroll=on_scroll) as listener:
-    with kl(on_press=on_press, on_release=on_release) as listener:
+#마우스 및 키보드 listner을 실행하면서 tkinter gui메인 루프를 함께 운영
+#listner는 마우스 및 키보드 입력 이벤트를 감지, 처리 , gui는 사용자 인터페이스 관리
+with ml(on_click=on_click, on_scroll=on_scroll) as listener: #마우스 listner실행
+           #on_click: 마우스 클릭 이벤트 처리  , on_scroll: 마우스 스크롤 이벤트 처리
+    with kl(on_press=on_press, on_release=on_release) as listener: #키보드 리스너 실행
+           #on_press: 키가 눌렸을 때 호출 , #on_realease: 키가 해제되었을 때 호출
         win.mainloop();
+           #tkinter GUI메인 루프 실행
+           #mainloop는 GUI이벤트 루프를 유지하며 사용자가 창을 클릭하는 등의 이벤트로 처리
