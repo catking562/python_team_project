@@ -5,7 +5,7 @@ from pynput.mouse import Listener as ml;
 import threading;
 import pynput;
 import time;
-from api import Record, Runner, configSaver, FileSaver, CreatePoP, DataEncoder;
+from api import Record, Runner, configSaver, FileSaver, CreatePoP, DataEncoder; #api 폴더에서 각 파일들을 임포트
 
 """버그방지용"""
 
@@ -29,10 +29,10 @@ def actionEvent(name):
     global runStart;
     global reapeatStart;
     global programmode;
-    match(name):
+    match(name):  #각 이벤트가 들어오면 해당하는 코드를 실행함.
         case "recordStart":
             if(recordStart["state"]==tkinter.NORMAL and programmode==0):
-                recordStart.invoke();
+                recordStart.invoke(); #버튼을 클릭함.
                 return 1;
         case "recordStop":
             if(recordStart["state"]==tkinter.NORMAL and programmode==1):
@@ -61,7 +61,7 @@ def actionEvent(name):
 def runHotKey(Key):
     global keydata;
     if str(Key) in keydata:
-        for act in keydata[str(Key)].split(","):
+        for act in keydata[str(Key)].split(","):  #','를 구분자로 배열되어 있는 것을 분리하고, 각 이벤트 실행 (하나라도 실행성공하면 return 1)
             if(actionEvent(act)):
                 return 1;
     return 0;
@@ -70,7 +70,7 @@ def runHotKey(Key):
 def loadKey(active, key):
     global keydata;
     if key in keydata:
-        keydata[key] = keydata[key]+","+active;
+        keydata[key] = keydata[key]+","+active;  #비슷한 단축키가 있는 경우, ','를 구분자로 해서 저장함.
     else:
         keydata[key] = active;
 
@@ -84,56 +84,56 @@ def initAllKey():
     clearAllKey();
     global hotkeys;
     for key in hotkeys:
-        loadKey(key, hotkeys[key]);
+        loadKey(key, hotkeys[key]);  #<key, value>를 <value, key>의 형태로 바꿈
 
 #사용자지정파일을 로드함
 def loadOption():
     global hotkeys;
-    configSaver.load();
+    configSaver.load();  #option.txt파일을 로드함.
     for hotkey in hotkeys:
-        if not configSaver.isKey(hotkey):
+        if not configSaver.isKey(hotkey):  #option.txt에 값이 없다면 초기 값을 지정해줌
             configSaver.put(hotkey, hotkeys[hotkey]);
-    for hotkey in configSaver.get_All():
+    for hotkey in configSaver.get_All():   #마지막으로 option.txt파일 전체를 hotkeys에 반영해줌.
         hotkeys[hotkey] = configSaver.get(hotkey);
 
 #사용자지정파일을 저장함
 def saveOption():
     global hotkeys;
     for hotkey in hotkeys:
-        configSaver.put(hotkey, str(hotkeys[hotkey]));
+        configSaver.put(hotkey, str(hotkeys[hotkey]));  #hotkeys에 있는 데이터를 option.txt에 저장
     configSaver.save();
 
 """입력 이벤트들"""
 #마우스 클릭 이벤트
 def on_click(x, y, button, pressed):
     print(x, y, button, pressed);
-    if(programmode==1):
-        Record.add_input([time.perf_counter(), "click", x, y, button, pressed]);
+    if(programmode==1):                                                           #녹화중인지 확인
+        Record.add_input([time.perf_counter(), "click", x, y, button, pressed]);  #Record에 데이터를 보냄
 
 #마우스 스크롤 이벤트
 def on_scroll(x, y, dx, dy):
     print(x, y, dx, dy);
-    if(programmode==1):
-        Record.add_input([time.perf_counter(), "scroll", x, y, dx, dy]);
+    if(programmode==1):                                                     #녹화중인지 확인
+        Record.add_input([time.perf_counter(), "scroll", x, y, dx, dy]);    #Record에 데이터를 보냄
 
 #키보드 다운 이벤트
 def on_press(key):
     print(key, "press");
     if(runHotKey(key)):
         return;
-    if(programmode==1):
-        Record.add_input([time.perf_counter(), "press", key]);
+    if(programmode==1):                                              #녹화중인지 확인
+        Record.add_input([time.perf_counter(), "press", key]);       #Record에 데이터를 보냄
         return;
-    if(programmode==7 and CreatePoP.isneedButton()):
-        CreatePoP.setButton(key);
-        CreatePoP.closeMiniPop();
+    if(programmode==7 and CreatePoP.isneedButton()):       #설정에서 키 변경중인지 확인
+        CreatePoP.setButton(key);                          #CreatePoP에 키 데이터를 보내줌
+        CreatePoP.closeMiniPop();                          #키 설정 창을 닫음. (이후 hotkeys에 저장됨)
 
 
 #키보드 업 이벤트
 def on_release(key):
     print(key, "release");
-    if(programmode==1):
-        Record.add_input([time.perf_counter(), "release", key]);
+    if(programmode==1):                                             #녹화중인지 확인
+        Record.add_input([time.perf_counter(), "release", key]);    #Record에 데이터를 보냄
 
 """GUI이벤트들"""
 win = tkinter.Tk();
@@ -149,6 +149,7 @@ reapeatStart = None;
 isData = False;
 recordData = None;
 
+#GUI를 업데이트 함.
 def updateWindow():
     global fileSave;
     global fileLoad;
@@ -160,7 +161,7 @@ def updateWindow():
     global isData;
     match(programmode):
         case 0: #정지
-            fileLoad["state"] = tkinter.NORMAL;
+            fileLoad["state"] = tkinter.NORMAL;  #버튼 활성화
             option["state"] = tkinter.NORMAL;
             recordStart["state"] = tkinter.NORMAL;
             replaceRecord(1);
@@ -171,7 +172,7 @@ def updateWindow():
                 reapeatStart["state"] = tkinter.NORMAL;
                 fileSave["state"] = tkinter.NORMAL;
             else:
-                runStart["state"] = tkinter.DISABLED;
+                runStart["state"] = tkinter.DISABLED;  #버튼 비활성화
                 reapeatStart["state"] = tkinter.DISABLED;
                 fileSave["state"] = tkinter.DISABLED;
             return;
@@ -246,13 +247,7 @@ def updateWindow():
             replaceRunStart(1);
             replaceReapeatStart(1);
 
-def filename_pop_accept():
-    global filename_pop;
-    global input_field
-    global input_value;
-    input_value = input_field.get();
-    filename_pop.destroy();
-
+#저장 버튼을 클릭했을 때 실행
 def clickFileSave():
     global win;
     global programmode;
@@ -271,6 +266,7 @@ def clickFileSave():
     updateWindow();
     print("clickFileSave");
 
+#로드 버튼을 클릭했을 때 실행
 def clickFileLoad():
     global programmode;
     global isData;
@@ -285,6 +281,7 @@ def clickFileLoad():
     updateWindow();
     print("clickFileLoad");
 
+#설정버튼을 클릭했을 때 실행
 def clickOption():
     global programmode;
     global hotkeys;
@@ -298,6 +295,7 @@ def clickOption():
     updateWindow();
     print("clickOption");
 
+#녹화버튼을 클릭했을 때 실행
 def clickRecordStart():
     global programmode;
     programmode = 1;
@@ -305,6 +303,7 @@ def clickRecordStart():
     Record.start();
     print("clickRecordStart");
 
+#녹화종료 버튼을 클릭했을 때 실행
 def clickStopRecord():
     global programmode;
     global isData;
@@ -323,6 +322,7 @@ def clickStopRecord():
     updateWindow();
     print("clickStopRecord");
 
+#시작 버튼을 클릭했을 때 실행
 def clickRunStart():
     global programmode;
     global recordData;
@@ -337,6 +337,7 @@ def clickRunStart():
     task.start();
     print("clickRunStart");
 
+#종료 버튼을 클릭했을 때 실행
 def clickStopRun():
     global programmode;
     programmode = 0;
@@ -344,6 +345,7 @@ def clickStopRun():
     Runner.stop();
     print("clickStopRun");
 
+#반복시작 버튼을 클릭했을 때 실행
 def clickReapeatStart():
     global programmode;
     global recordData;
@@ -358,6 +360,7 @@ def clickReapeatStart():
     task.start();
     print("clickReapeatStart");
 
+#반복종료 버튼을 클릭했을 때 실행
 def clickStopReapeat():
     global programmode;
     programmode = 0;
@@ -365,6 +368,7 @@ def clickStopReapeat():
     Runner.stop();
     print("clickStopReapeat");
 
+#녹화 버튼을 녹화종료로 바꾸는 용도. (반대도 마찬가지)
 def replaceRecord(b):
     global recordStart;
     if(b):
@@ -374,6 +378,7 @@ def replaceRecord(b):
         recordStart['text'] = "녹화종료";
         recordStart['command'] = clickStopRecord;
 
+#시작 버튼을 시작종료로 바꾸는 용도. (반대도 마찬가지)
 def replaceRunStart(b):
     global runStart;
     if(b):
@@ -383,6 +388,7 @@ def replaceRunStart(b):
         runStart['text'] = "시작종료"
         runStart['command'] = clickStopRun;
 
+#반복시작 버튼을 반복종료로 바꾸는 용도. (반대도 마찬가지)
 def replaceReapeatStart(b):
     global repeatStart;
     if(b):
@@ -392,6 +398,7 @@ def replaceReapeatStart(b):
         reapeatStart['text'] = "반복종료"
         reapeatStart['command'] = clickStopReapeat;
 
+#윈도우를 초기화함. (버튼을 생성하고, 변수의 초기값을 정하는 과정이 포함됨.)
 def initWindow():
     global win;
     global fileSave;
