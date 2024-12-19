@@ -43,7 +43,7 @@ def type_case(action):
     if action[1] == "click": #클릭한 경우
         steps = 1/1000  # 드래그를 부드럽게 하기 위한 단계 수
         #각 리스트에 들어있는 값들을 저장 
-        type_press = action[1] : #클릭행위
+        type_press = action[1]  #클릭행위
         x = action[2]; #x,y의 좌표값
         y = action[3];
         button = action[4] #좌클릭 or 우클릭
