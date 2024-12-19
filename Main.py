@@ -156,7 +156,7 @@ isData = False;
 recordData = None;
 
 #GUI를 업데이트 함.
-def updateWindow():
+def updateWindow(): 
     global fileSave;
     global fileLoad;
     global option;
@@ -165,7 +165,9 @@ def updateWindow():
     global reapeatStart;
     global programmode;
     global isData;
-    match(programmode):
+
+    #GUI버튼을 통해서 변경된 프로그램모드에 따라 GUI버튼을 비활성화시키거나 활성화시킨다.       
+    match(programmode): 
         case 0: #정지
             fileLoad["state"] = tkinter.NORMAL;  #버튼 활성화
             option["state"] = tkinter.NORMAL;
@@ -255,15 +257,15 @@ def updateWindow():
 
 #저장 버튼을 클릭했을 때 실행
 def clickFileSave():
-    global win;
-    global programmode;
-    programmode = 4;
-    updateWindow();
+    global win; #창 객체
+    global programmode; #현재 프로그램 상태를 나타내는 전역 변수
+    programmode = 4; #프로그램 상태를 '저장'으로 설정
+    updateWindow(); #GUI 버튼 상태를 업데이트
     #파일이름 물어보는 팝업
-    name = CreatePoP.getFileName(win);
-    #저장 중 팝업
+    name = CreatePoP.getFileName(win); #저장할 파일 이름을 사용자에게 입력받는 팝업 창 호출
+    #저장 중 이라는 메시지를 표시하는 팝업 창 생성
     CreatePoP.createMessage("저장 중...");
-    #저장 시작
+    #파일 이름이 입력된 경우 데이터를 파일로 저장
     if(name!=None):
         FileSaver.saveFile(DataEncoder.encoding_Tostr(recordData), name);
     #저장 끝
@@ -274,13 +276,14 @@ def clickFileSave():
 
 #로드 버튼을 클릭했을 때 실행
 def clickFileLoad():
-    global programmode;
-    global isData;
-    global recordData;
-    programmode = 5;
-    updateWindow();
+    global programmode; #프로그램 상태 전역 변수
+    global isData; #데이터가 있는지 여부를 나타내는 전역 변수
+    global recordData; #녹화된 데이터를 저장하는 전역 변수
+    programmode = 5; #프로그램 상태를 '불러오기'로 설정
+    updateWindow(); #GUI버튼 상태를 업데이트
+    #저장된 파일 목록을 사용자에게 사용자에게 보여주고 선택하도록 팝업 생성
     sel = CreatePoP.getSelectInList(FileSaver.getSavedFileNames(), win);
-    if(sel!=None):
+    if(sel!=None): #사용자가 파일을 선택한 경우, 데이터를 로드하고 recordData에 저장
         recordData = DataEncoder.encoding_bystr(FileSaver.loadFile(sel));
         isData = True;
     programmode = 0;
@@ -288,65 +291,65 @@ def clickFileLoad():
     print("clickFileLoad");
 
 #설정버튼을 클릭했을 때 실행
-def clickOption():
+def clickOption(): 
     global programmode;
     global hotkeys;
     global win;
-    programmode = 7;
-    updateWindow();
-    CreatePoP.editOption(hotkeys, win);
-    initAllKey();
-    saveOption();
-    programmode = 0;
+    programmode = 7; #프로그램 상태를 '설정'으로 변경
+    updateWindow(); #gui업데이트
+    CreatePoP.editOption(hotkeys, win); #사용자 설정을 편집할 수 있는 팝업 창 호출
+    initAllKey(); #단축키 설정을 새로 고침
+    saveOption(); #새로운 단축키 설정을 저장
+    programmode = 0; #프로그램 상태를 '정지'로 변경
     updateWindow();
     print("clickOption");
 
 #녹화버튼을 클릭했을 때 실행
-def clickRecordStart():
-    global programmode;
-    programmode = 1;
+def clickRecordStart(): 
+    global programmode; 
+    programmode = 1; #프로그램 상태를 '녹화'로 변경
     updateWindow();
-    Record.start();
+    Record.start(); #Record.py에서 start() 함수 실행
     print("clickRecordStart");
 
 #녹화종료 버튼을 클릭했을 때 실행
-def clickStopRecord():
+def clickStopRecord(): 
     global programmode;
-    global isData;
-    global recordData;
+    global isData; #데이터가 있는지 여부를 나타내는 전역 변수
+    global recordData; #녹화된 데이터를 저장하는 전역변수
     #녹화종료
-    isData = True;
-    programmode = 6;
+    isData = True; #데이터를 성공적으로 녹화했음을 표시
+    programmode = 6; #프로그램 상태를 '인코딩'으로 변경
     updateWindow();
-    Record.stop();
+    Record.stop(); #Record.py에서 stop()함수 실행
     #인코딩
-    CreatePoP.createMessage("인코딩 중...");
-    recordData = DataEncoder.encoding_Torun(Record.get_save());
-    #인코딩 완료
+    CreatePoP.createMessage("인코딩 중..."); #인코딩 중... 이라는 메시지를 표시하는 팝업 창 생성
+    recordData = DataEncoder.encoding_Torun(Record.get_save()); #녹화 데이터를 실행 가능한 현태로 인코딩하여 recordData에 저장
+    #인코딩 완료 후 팝업 창 제거
     CreatePoP.destroy();
     programmode = 0;
     updateWindow();
     print("clickStopRecord");
 
-#시작 버튼을 클릭했을 때 실행
+#실행 버튼 클릭 시 실행되는 함수
 def clickRunStart():
-    global programmode;
-    global recordData;
+    global programmode; #프로그램 상태 전역 변수
+    global recordData; #실행할 데이터
 
     #반복을 시작함
-    def startRun(dic):
-        Runner.start(dic);
+    def startRun(dic): #데이터를 실행하는 함수 정의(쓰레드에서 실행될 함수)
+        Runner.start(dic); #Runner.py 에서 start()함수 실행
 
-    programmode = 2;
-    updateWindow();
-    task = threading.Thread(target=startRun, args=(recordData,));
-    task.start();
+    programmode = 2; #프로그램 상태를 '실행'으로 변경
+    updateWindow(); 
+    task = threading.Thread(target=startRun, args=(recordData,)); #실행 작업을 별도 쓰레드에서 처리
+    task.start(); #쓰레드에서 부른 함수와 데이터를 이용하여 시작
     print("clickRunStart");
 
 #종료 버튼을 클릭했을 때 실행
 def clickStopRun():
     global programmode;
-    programmode = 0;
+    programmode = 0; #프로그램 상태를 '정지'로 변경
     updateWindow();
     Runner.stop();
     print("clickStopRun");
@@ -354,30 +357,30 @@ def clickStopRun():
 #반복시작 버튼을 클릭했을 때 실행
 def clickReapeatStart():
     global programmode;
-    global recordData;
+    global recordData; #반복 실행할 데이터
 
     #반복을 종료함
-    def repeatRun(dic):
-        Runner.repeatStart(dic);
+    def repeatRun(dic): #반복 실행 작업을 처리하는 함수 정의(쓰레드에서 실행될 함수)
+        Runner.repeatStart(dic); #Runner에서 repeatStart함수 실행
 
-    programmode = 3;
+    programmode = 3; #프로그램 상태를 '반복 실행'으로 변경
     updateWindow();
-    task = threading.Thread(target=repeatRun, args=(recordData,));
+    task = threading.Thread(target=repeatRun, args=(recordData,)); #반복 실행 작업을 별도 쓰레드에서 처리
     task.start();
     print("clickReapeatStart");
 
 #반복종료 버튼을 클릭했을 때 실행
-def clickStopReapeat():
+def clickStopReapeat(): 
     global programmode;
-    programmode = 0;
+    programmode = 0; #프로그램 상태를 정지로 변경
     updateWindow();
-    Runner.stop();
+    Runner.stop(); #반복 실행 작업 종료 (Runner 에서 stop실행)
     print("clickStopReapeat");
 
 #녹화 버튼을 녹화종료로 바꾸는 용도. (반대도 마찬가지)
 def replaceRecord(b):
-    global recordStart;
-    if(b):
+    global recordStart; #녹화 버튼 객체
+    if(b): #녹화 시작 상태로 변경
         recordStart['text'] = "녹화시작";
         recordStart['command'] = clickRecordStart;
     else:
@@ -386,8 +389,8 @@ def replaceRecord(b):
 
 #시작 버튼을 시작종료로 바꾸는 용도. (반대도 마찬가지)
 def replaceRunStart(b):
-    global runStart;
-    if(b):
+    global runStart; #실행 버튼 객체
+    if(b): #실행 시작 상태로 변경
         runStart['text'] = "시작";
         runStart['command'] = clickRunStart;
     else:
@@ -396,8 +399,8 @@ def replaceRunStart(b):
 
 #반복시작 버튼을 반복종료로 바꾸는 용도. (반대도 마찬가지)
 def replaceReapeatStart(b):
-    global repeatStart;
-    if(b):
+    global repeatStart; #반복 실행 버튼 객체
+    if(b): #반복 실행 상태로 변경
         reapeatStart['text'] = "반복시작";
         reapeatStart['command'] = clickReapeatStart;
     else:
