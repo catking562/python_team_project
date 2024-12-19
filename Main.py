@@ -70,8 +70,8 @@ def actionEvent(name):
 def runHotKey(Key):
     global keydata;
     if str(Key) in keydata: #입력된 키보드의 키가 keydata 딕셔너리에서 존재하는지 확인(단축키인지 확인하는 if문)
-        for act in keydata[str(Key)].split(","):  #keydate에서 
-            if(actionEvent(act)): #이벤트 실행 성공 시
+        for act in keydata[str(Key)].split(","):  #keydate에서 이벤트를 for문의 인자로 넣음
+            if(actionEvent(act)): #해당 함수 내에서 조건에 따라 단축키 실행
                 return 1;
     return 0;
 
