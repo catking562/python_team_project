@@ -5,7 +5,7 @@ from pynput.mouse import Listener as ml; # 마우스 키 입력 감지
 import threading; #파이썬 파일의 동시 접근을 위한 모듈
 import pynput;  
 import time;
-from api import Record, Runner, configSaver, FileSaver, CreatePoP, DataEncoder; #api 폴더에서 각 파일들을 임포트
+from api import Record, Runner, ConfigSaver, FileSaver, CreatePoP, DataEncoder; #api 폴더에서 각 파일들을 임포트
 
 """버그방지용"""
 
